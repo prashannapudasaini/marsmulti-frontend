@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Ticket, Plus, Edit, Trash2, Percent, DollarSign, CheckCircle2, X, AlertCircle } from "lucide-react";
@@ -20,7 +21,7 @@ export const CouponManager = () => {
     const fetchCoupons = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/coupons", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/coupons`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCoupons(res.data?.items || (Array.isArray(res.data) ? res.data : []));
@@ -58,13 +59,13 @@ export const CouponManager = () => {
 
     try {
       if (editingCoupon) {
-        await axios.put(`http://localhost:8000/api/v1/admin/coupons/${editingCoupon.id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/coupons/${editingCoupon.id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCoupons((prev) => prev.map((c) => c.id === editingCoupon.id ? { ...c, ...payload } : c));
         toast.success("Discount coupon code updated successfully.");
       } else {
-        const res = await axios.post("http://localhost:8000/api/v1/admin/coupons", payload, {
+        const res = await axios.post(`${API_BASE_URL}/api/v1/admin/coupons`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCoupons((prev) => [...prev, res.data || { ...payload, id: Date.now(), used_count: 0 }]);
@@ -84,7 +85,7 @@ export const CouponManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/coupons/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/coupons/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Coupon deleted.");

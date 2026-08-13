@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -21,7 +22,7 @@ export const ProductList = ({ filterCategoryId, filterCategorySlug, filterCatego
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/v1/admin/products", {
+      const res = await axios.get(`${API_BASE_URL}/api/v1/admin/products`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       let fetched = res.data?.items || (Array.isArray(res.data) ? res.data : []);
@@ -58,7 +59,7 @@ export const ProductList = ({ filterCategoryId, filterCategorySlug, filterCatego
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/products/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/products/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Product deleted permanently.");
@@ -78,7 +79,7 @@ export const ProductList = ({ filterCategoryId, filterCategorySlug, filterCatego
 
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/admin/products/${quickStockModal.id}/quick-stock?new_stock=${count}`,
+        `${API_BASE_URL}/api/v1/admin/products/${quickStockModal.id}/quick-stock?new_stock=${count}`,
         {},
         { headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` } }
       );

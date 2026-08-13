@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Plus, Edit, Trash2, Layers, ChevronRight, Check, X, FolderTree, ArrowLeft } from "lucide-react";
@@ -23,7 +24,7 @@ export const CategoryManager = () => {
     const fetchCategories = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/categories", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/categories`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCategories(res.data || []);
@@ -65,13 +66,13 @@ export const CategoryManager = () => {
 
     try {
       if (editingItem) {
-        await axios.put(`http://localhost:8000/api/v1/admin/categories/${editingItem.id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/categories/${editingItem.id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCategories((prev) => prev.map((c) => c.id === editingItem.id ? { ...c, ...payload } : c));
         toast.success("Category classification updated successfully.");
       } else {
-        const res = await axios.post("http://localhost:8000/api/v1/admin/categories", payload, {
+        const res = await axios.post(`${API_BASE_URL}/api/v1/admin/categories`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCategories((prev) => [...prev, res.data || { ...payload, id: Date.now(), products_count: 0, created_at: "Just now" }]);
@@ -91,7 +92,7 @@ export const CategoryManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/categories/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/categories/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Category record removed.");

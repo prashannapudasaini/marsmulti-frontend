@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FileText, Plus, Edit, Trash2, Globe, Save, CheckCircle2, X } from "lucide-react";
@@ -22,7 +23,7 @@ export const CmsManager = () => {
     const fetchPages = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/cms", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/cms`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setPages(res.data?.items || (Array.isArray(res.data) ? res.data : []));
@@ -63,13 +64,13 @@ export const CmsManager = () => {
 
     try {
       if (editingPage) {
-        await axios.put(`http://localhost:8000/api/v1/admin/cms/${editingPage.id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/cms/${editingPage.id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setPages((prev) => prev.map((p) => p.id === editingPage.id ? { ...p, ...payload } : p));
         toast.success("CMS policy page updated.");
       } else {
-        const res = await axios.post("http://localhost:8000/api/v1/admin/cms", payload, {
+        const res = await axios.post(`${API_BASE_URL}/api/v1/admin/cms`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setPages((prev) => [...prev, res.data || { ...payload, id: Date.now() }]);
@@ -89,7 +90,7 @@ export const CmsManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/cms/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/cms/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("CMS document deleted.");

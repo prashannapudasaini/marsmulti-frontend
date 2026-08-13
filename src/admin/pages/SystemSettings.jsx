@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Settings, Save, Mail, MapPin, DollarSign, Globe, Shield, RefreshCw, CheckCircle2 } from "lucide-react";
@@ -26,7 +27,7 @@ export const SystemSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/settings", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/settings`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         });
         if (res.data) setFormData(res.data);
@@ -43,7 +44,7 @@ export const SystemSettings = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await axios.put("http://localhost:8000/api/v1/admin/settings", formData, {
+      await axios.put(`${API_BASE_URL}/api/v1/admin/settings`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       });
       toast.success("Showroom system configurations and SEO metadata saved successfully!");

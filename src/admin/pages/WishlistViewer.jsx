@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Heart, Package, Users, TrendingUp } from "lucide-react";
@@ -13,7 +14,7 @@ export const WishlistViewer = () => {
     const fetchWishlists = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/wishlists", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/wishlists`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         const list = res.data?.items || res.data?.most_wishlisted || (Array.isArray(res.data) ? res.data : []);

@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BarChart2, ArrowUp, ArrowDown, Package, User, FileText } from "lucide-react";
@@ -13,7 +14,7 @@ export const InventoryTracker = () => {
     const fetchInventoryLogs = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/inventory", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/inventory`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setLogs(res.data?.items || (Array.isArray(res.data) ? res.data : []));

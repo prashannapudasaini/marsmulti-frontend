@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Image as ImageIcon, Plus, Edit, Trash2, Link as LinkIcon, MoveVertical, Eye, X } from "lucide-react";
@@ -20,7 +21,7 @@ export const BannerManager = () => {
     const fetchBanners = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/banners", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/banners`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBanners(res.data?.items || (Array.isArray(res.data) ? res.data : []));
@@ -58,13 +59,13 @@ export const BannerManager = () => {
 
     try {
       if (editingBanner) {
-        await axios.put(`http://localhost:8000/api/v1/admin/banners/${editingBanner.id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/banners/${editingBanner.id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBanners((prev) => prev.map((b) => b.id === editingBanner.id ? { ...b, ...payload } : b));
         toast.success("Promotional banner graphic updated.");
       } else {
-        const res = await axios.post("http://localhost:8000/api/v1/admin/banners", payload, {
+        const res = await axios.post(`${API_BASE_URL}/api/v1/admin/banners`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBanners((prev) => [...prev, res.data || { ...payload, id: Date.now() }]);
@@ -84,7 +85,7 @@ export const BannerManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/banners/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/banners/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Banner deleted.");

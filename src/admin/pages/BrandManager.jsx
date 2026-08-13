@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Plus, Edit, Trash2, Tag, ExternalLink, Image as ImageIcon, X, ArrowLeft } from "lucide-react";
@@ -23,7 +24,7 @@ export const BrandManager = () => {
     const fetchBrands = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/brands", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/brands`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBrands(res.data || []);
@@ -67,13 +68,13 @@ export const BrandManager = () => {
 
     try {
       if (editingBrand) {
-        await axios.put(`http://localhost:8000/api/v1/admin/brands/${editingBrand.id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/brands/${editingBrand.id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBrands((prev) => prev.map((b) => b.id === editingBrand.id ? { ...b, ...payload } : b));
         toast.success("Brand partner specification updated.");
       } else {
-        const res = await axios.post("http://localhost:8000/api/v1/admin/brands", payload, {
+        const res = await axios.post(`${API_BASE_URL}/api/v1/admin/brands`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setBrands((prev) => [...prev, res.data || { ...payload, id: Date.now(), products_count: 0 }]);
@@ -93,7 +94,7 @@ export const BrandManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/brands/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/brands/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Brand record deleted.");

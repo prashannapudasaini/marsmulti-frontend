@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ShieldCheck, Lock, CheckCircle2, Key, UserCheck, AlertTriangle } from "lucide-react";
@@ -13,7 +14,7 @@ export const RoleManager = () => {
     const fetchRoles = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/roles", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/roles`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setRoles(res.data?.items || (Array.isArray(res.data) ? res.data : []));

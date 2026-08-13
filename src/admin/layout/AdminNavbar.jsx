@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Bell, User, LogOut, Menu, X, ChevronDown, Store, Shield, CheckCircle } from "lucide-react";
@@ -19,7 +20,7 @@ export const AdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     // Fetch notifications summary
     const fetchNotifs = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/notifications", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/notifications`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         if (res.data) setNotifications(res.data.slice(0, 5));
@@ -38,7 +39,7 @@ export const AdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         return;
       }
       try {
-        const res = await axios.get(`http://localhost:8000/api/v1/admin/search?q=${encodeURIComponent(searchQuery)}`, {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/search?q=${encodeURIComponent(searchQuery)}`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setSearchResults(res.data.results || []);

@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link, useSearchParams } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -50,10 +51,10 @@ export const ProductForm = () => {
     const fetchData = async () => {
       try {
         const [catRes, brandRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/v1/admin/categories", {
+          axios.get(`${API_BASE_URL}/api/v1/admin/categories`, {
             headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
           }),
-          axios.get("http://localhost:8000/api/v1/admin/brands", {
+          axios.get(`${API_BASE_URL}/api/v1/admin/brands`, {
             headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
           })
         ]);
@@ -106,7 +107,7 @@ export const ProductForm = () => {
       const fetchProduct = async () => {
         setIsLoading(true);
         try {
-          const res = await axios.get(`http://localhost:8000/api/v1/admin/products/${id}`, {
+          const res = await axios.get(`${API_BASE_URL}/api/v1/admin/products/${id}`, {
             headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
           });
 
@@ -206,12 +207,12 @@ export const ProductForm = () => {
       };
 
       if (isEditing) {
-        await axios.put(`http://localhost:8000/api/v1/admin/products/${id}`, payload, {
+        await axios.put(`${API_BASE_URL}/api/v1/admin/products/${id}`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         toast.success("Product updated successfully!");
       } else {
-        await axios.post("http://localhost:8000/api/v1/admin/products", payload, {
+        await axios.post(`${API_BASE_URL}/api/v1/admin/products`, payload, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         toast.success("New product created!");

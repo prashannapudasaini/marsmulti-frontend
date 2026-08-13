@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import { CONFIG } from "../constants/config";
 
 export class ApiError extends Error {
@@ -45,7 +46,7 @@ export const api = {
       if (error instanceof ApiError) throw error;
       throw new ApiError(
         0,
-        "Unable to connect to the backend API server (http://localhost:8000). Using local fallback catalog.",
+        "Unable to connect to the backend API server (${API_BASE_URL}). Using local fallback catalog.",
         null
       );
     }

@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ShoppingCart, AlertTriangle, DollarSign, Clock, CheckCircle2 } from "lucide-react";
@@ -14,7 +15,7 @@ export const CartAnalytics = () => {
     const fetchCarts = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/carts", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/carts`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         const list = res.data?.recent_carts || res.data?.items || (Array.isArray(res.data) ? res.data : []);

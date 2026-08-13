@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -42,7 +43,7 @@ export const Dashboard = () => {
     const fetchDashboardData = async () => {
       setIsLoading(true);
       try {
-                const res = await axios.get(`http://localhost:8000/api/v1/admin/analytics/dashboard?timeframe=${timeframe}`, {
+                const res = await axios.get(`${API_BASE_URL}/api/v1/admin/analytics/dashboard?timeframe=${timeframe}`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         if (res.data && res.data.total_revenue !== undefined) {

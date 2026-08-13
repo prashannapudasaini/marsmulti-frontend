@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Users, Mail, Phone, MapPin, ShieldCheck, UserCheck, Search as SearchIcon, Calendar, Award } from "lucide-react";
@@ -15,7 +16,7 @@ export const CustomerManager = () => {
     const fetchCustomers = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/customers", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/customers`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setCustomers(res.data?.items || (Array.isArray(res.data) ? res.data : []));

@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Eye, Clock, User, ArrowUpRight } from "lucide-react";
@@ -13,7 +14,7 @@ export const RecentlyViewed = () => {
     const fetchHistory = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/recently-viewed", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/recently-viewed`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         const list = res.data?.top_viewed_products || res.data?.recent_sessions || (Array.isArray(res.data) ? res.data : []);

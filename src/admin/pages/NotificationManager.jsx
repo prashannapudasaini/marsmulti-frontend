@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Bell, Plus, Trash2, Send, CheckCircle2, AlertTriangle, Info, X } from "lucide-react";
@@ -19,7 +20,7 @@ export const NotificationManager = () => {
     const fetchNotifications = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/notifications", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/notifications`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setNotifications(res.data || []);
@@ -37,7 +38,7 @@ export const NotificationManager = () => {
     if (!formData.title.trim() || !formData.message.trim()) return toast.error("Please provide both alert title and message.");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/admin/notifications", formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/admin/notifications`, formData, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       setNotifications((prev) => [res.data || { ...formData, id: Date.now(), is_read: false, created_at: "Just now" }, ...prev]);
@@ -53,7 +54,7 @@ export const NotificationManager = () => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/notifications/${deleteId}`, {
+      await axios.delete(`${API_BASE_URL}/api/v1/admin/notifications/${deleteId}`, {
         headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
       });
       toast.success("Notification record removed.");

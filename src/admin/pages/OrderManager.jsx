@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ShoppingBag, Phone, MapPin, CheckCircle, Clock, Truck, Package, X, Filter, Download, ArrowRight } from "lucide-react";
@@ -21,8 +22,8 @@ export const OrderManager = () => {
       try {
         const headers = { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` };
         const [codRes, unifRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/v1/admin/orders", { headers }).catch(() => ({ data: [] })),
-          axios.get("http://localhost:8000/api/v1/admin/orders/unified", { headers }).catch(() => ({ data: [] }))
+          axios.get(`${API_BASE_URL}/api/v1/admin/orders`, { headers }).catch(() => ({ data: [] })),
+          axios.get(`${API_BASE_URL}/api/v1/admin/orders/unified`, { headers }).catch(() => ({ data: [] }))
         ]);
         const codOrders = (codRes.data?.items || (Array.isArray(codRes.data) ? codRes.data : [])).map(o => ({ ...o, payment_method: "COD", isUnified: false }));
         const unifOrders = (Array.isArray(unifRes.data) ? unifRes.data : []).map(o => ({ ...o, isUnified: true, phone: o.customer_phone }));
@@ -43,9 +44,9 @@ export const OrderManager = () => {
       const targetOrder = orders.find(o => o.id === orderId);
       const headers = { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` };
       if (targetOrder && targetOrder.isUnified) {
-        await axios.patch(`http://localhost:8000/api/v1/admin/orders/unified/${orderId}`, { status: nextStatus }, { headers });
+        await axios.patch(`${API_BASE_URL}/api/v1/admin/orders/unified/${orderId}`, { status: nextStatus }, { headers });
       } else {
-        await axios.put(`http://localhost:8000/api/v1/admin/orders/${orderId}/status?new_status=${nextStatus}`, {}, { headers });
+        await axios.put(`${API_BASE_URL}/api/v1/admin/orders/${orderId}/status?new_status=${nextStatus}`, {}, { headers });
       }
       toast.success(`Order #${orderId} status advanced to '${nextStatus.replace(/_/g, " ")}'.`);
       setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: nextStatus } : o));

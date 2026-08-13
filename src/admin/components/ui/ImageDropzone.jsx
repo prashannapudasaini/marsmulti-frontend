@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState } from "react";
 import { UploadCloud, Image as ImageIcon, Trash2, Plus, Star, Loader2 } from "lucide-react";
 import axios from "axios";
@@ -31,7 +32,7 @@ export const ImageDropzone = ({ images = [], onChange }) => {
     formData.append("file", file);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/admin/upload", formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/admin/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("access_token")}`

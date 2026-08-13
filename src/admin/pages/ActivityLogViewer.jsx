@@ -1,3 +1,4 @@
+import API_BASE_URL from "@/config/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Activity, Shield, User, Clock, CheckCircle } from "lucide-react";
@@ -13,7 +14,7 @@ export const ActivityLogViewer = () => {
     const fetchLogs = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/admin/activity-logs", {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/admin/activity-logs`, {
           headers: { Authorization: `Bearer ${authState.token || localStorage.getItem("access_token")}` }
         });
         setLogs(res.data || []);
